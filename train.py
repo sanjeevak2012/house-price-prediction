@@ -9,10 +9,11 @@ from params import ridge_param_grid, elasticnet_param_grid, xgb_param_grid
 from utils import eval_metrics
 
 # Loop through the hyperparameter combinations and log results in separate runs
-for params in ParameterGrid(elasticnet_param_grid):
+# for params in ParameterGrid(elasticnet_param_grid):
+for params in ParameterGrid(ridge_param_grid):
     with mlflow.start_run():
 
-        lr = ElasticNet(**params)
+        lr = Ridge(**params)
 
         lr.fit(X_train, y_train)
 
@@ -40,7 +41,7 @@ for params in ParameterGrid(elasticnet_param_grid):
         # Log the trained model
         mlflow.sklearn.log_model(
             lr,
-            "ElasticNet",
+            "Ridge",
              input_example=X_train,
              code_paths=['train.py','data.py','params.py','utils.py']
         )
