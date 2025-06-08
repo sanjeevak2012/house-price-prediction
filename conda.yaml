@@ -40,7 +40,7 @@ dependencies:
       - markupsafe
       - matplotlib
       - mlflow
-      - numpy
+      - numpy==2.2.5
       - oauthlib
       - packaging
       - pandas
