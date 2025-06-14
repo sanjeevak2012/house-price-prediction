@@ -49,6 +49,8 @@ test[numeric_cols] = imputer.transform(test[numeric_cols])
 # `inplace=True` modifies the DataFrame directly.
 for column in non_numeric_cols:
     X_train[column].fillna(X_train[column].mode()[0], inplace=True)
+    # X_train[column] = X_train[column].fillna(X_train[column].mode()[0])
+
     X_val[column].fillna(X_val[column].mode()[0], inplace=True)
     test[column].fillna(test[column].mode()[0], inplace=True)
 
@@ -58,6 +60,44 @@ for column in non_numeric_cols:
 #                  for each feature (e.g., if 'Street' has 'Pave' and 'Grvl', only 'Street_Grvl' is kept).
 # `handle_unknown='ignore'`: Crucial for deployment! If new, unseen categories appear in
 #                            validation or test data, they will be ignored instead of raising an error.
+
+
+"""
+### Why OneHotEncoding is Required
+
+ML models understand numbers but don’t understand meaning behind them.
+
+### 🚫 Problem Without Encoding
+
+Example:
+
+```python
+Feature: "Color" = ['Red', 'Green', 'Blue']
+If encoded as: Red=1, Green=2, Blue=3
+```
+
+Model thinks Blue > Green > Red, which is wrong (there’s no order in colors).
+
+### ✅ OneHotEncoding Fixes This
+
+```python
+Color_Red  Color_Green  Color_Blue  
+   1           0            0  
+   0           1            0  
+   0           0            1  
+```
+
+### ✅ Why Needed:
+
+* Converts categorical text → numerical ✅
+* Prevents false assumptions of order or distance ❌
+* Required by most ML algorithms like LinearRegression, XGBoost, etc.
+
+### ✅ In Short:
+
+> Encoding helps ML models treat categories as separate, not ordered numbers.
+
+"""
 ohe = OneHotEncoder(drop='first', handle_unknown='ignore')
 
 # Fits the encoder *only* on the training data's categorical columns (`fit_transform`).
@@ -71,3 +111,5 @@ test = ohe.transform(test)
 
 # After this script runs, X_train, X_val, and test are all preprocessed numerical matrices
 # (likely sparse matrices), ready to be fed into a machine learning model.
+
+
