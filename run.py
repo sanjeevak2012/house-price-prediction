@@ -1,9 +1,10 @@
 import mlflow
 
-experiment_name = "ElasticNet"
+experiment_name = "Ridge" # this can change to ridge, xgbregressor
 entry_point = "Training" # this is described in MLproject file
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+# mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_tracking_uri('http://54.92.249.203:5000/')
 
 mlflow.projects.run(
     uri=".", # Points to the current folder, where an MLproject file lives.
